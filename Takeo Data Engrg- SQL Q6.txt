@@ -1,0 +1,78 @@
+Q 6
+Table: Cinema
++----------------+----------+
+| Column Name    | Type     |
++----------------+----------+
+| id             | int      |
+| movie          | varchar  |
+| description    | varchar  |
+| rating         | float    |
++----------------+----------+
+id is the primary key for this table.
+Each row contains information about the name of a movie, its genre, and its rating.
+rating is a 2 decimal places float in the range [0, 10]
+ 
+ 
+Write an SQL query to report the movies with an odd-numbered ID and a description that is not "boring".
+Return the result table ordered by rating in descending order.
+The query result format is in the following example.
+ 
+Example 1:
+Input: 
+Cinema table:
++----+------------+-------------+--------+
+| id | movie      | description | rating |
++----+------------+-------------+--------+
+| 1  | War        | great 3D    | 8.9    |
+| 2  | Science    | fiction     | 8.5    |
+| 3  | irish      | boring      | 6.2    |
+| 4  | Ice song   | Fantacy     | 8.6    |
+| 5  | House card | Interesting | 9.1    |
++----+------------+-------------+--------+
+Output: 
++----+------------+-------------+--------+
+| id | movie      | description | rating |
++----+------------+-------------+--------+
+| 5  | House card | Interesting | 9.1    |
+| 1  | War        | great 3D    | 8.9    |
++----+------------+-------------+--------+
+Explanation: 
+We have three movies with odd-numbered IDs: 1, 3, and 5. The movie with ID = 3 is boring so we do not include it in the answer.
+
+ANSWER:
+DDL:
+-- Table: public.cinema
+
+-- DROP TABLE IF EXISTS public.cinema;
+
+CREATE TABLE IF NOT EXISTS public.cinema
+(
+    id integer NOT NULL,
+    movie character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    description character varying(100) COLLATE pg_catalog."default",
+    rating double precision NOT NULL,
+    CONSTRAINT cinema_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.cinema
+    OWNER to root;
+
+------------------------------------------------------
+
+Insert Data.
+INSERT INTO ActorDirector (actor_id, director_id, timestamp)
+Values (1,1,0),
+(1,1,1),
+(1,1,2),
+(1,2,3),
+(1,2,4),
+(2,1,5),
+(2,1,6)
+-------------------------------------------------------
+
+SELECT query:
+Select * from Cinema
+WHERE id%2=1 and description not like '%oring%'
+order by rating desc
